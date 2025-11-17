@@ -1,6 +1,7 @@
 # Ghost Vibe Coding – Heavenly Calendar
 
-This repository contains the **Heavenly Calendar** and significant dates of the movement of unity,  
+This repository contains the **Heavenly Calendar** and significant dates of the Unification Church
+,  
 calculated using both the solar and lunar calendars.  
 It also demonstrates how **vibe coding** (AI‑assisted code creation) can be applied to Ghost CMS  
 to accelerate prototyping of integrations and extensions.
