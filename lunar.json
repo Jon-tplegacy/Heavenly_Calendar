@@ -1,0 +1,74 @@
+{
+  "anchors": [
+    { "date": "2025-10-21", "lunar_md": "9.1" },
+    { "date": "2025-11-20", "lunar_md": "10.1" }
+  ],
+
+  "recurring_lunar_holidays": [
+    {
+      "name": "Heavenly Parent’s Day",
+      "slug": "heavenly-parents-day",
+      "lunar_md": "1.1",
+      "confidence": "high"
+    },
+    {
+      "name": "True Parents’ Day",
+      "slug": "true-parents-day",
+      "lunar_md": "3.1",
+      "confidence": "high"
+    },
+    {
+      "name": "Day of All True Things",
+      "slug": "day-of-all-true-things",
+      "lunar_md": "5.1",
+      "confidence": "high"
+    },
+    {
+      "name": "True Children’s Day",
+      "slug": "true-childrens-day",
+      "lunar_md": "10.1",
+      "confidence": "high"
+    },
+    {
+      "name": "Foundation Day (Cheon Il Guk)",
+      "slug": "foundation-day-cig",
+      "lunar_md": "1.13",
+      "confidence": "high"
+    },
+
+
+    {
+      "name": "True Parents’ Birthday ",
+      "slug": "tp-birthday",
+      "lunar_md": "1.6",
+      "confidence": "medium"
+    },
+    {
+      "name": "True Parents’ Holy Wedding ",
+      "slug": "tp-holy-wedding",
+      "lunar_md": "3.16",
+      "confidence": "medium"
+    },
+    {
+      "name": "7.1 Jeol — Declaration Day of God’s Eternal Blessing",
+      "slug": "7-1-jeol",
+      "lunar_md": "7.1",
+      "confidence": "high"
+    },
+    {
+      "name": "7.8 Jeol — Cosmic Sabbath for the Parents of Heaven and Earth",
+      "slug": "7-8-jeol",
+      "lunar_md": "7.8",
+      "confidence": "high"
+    }
+  ],
+
+  "ahn_shil_il_rule": {
+    "description": "Every 8th lunar day of each month",
+    "days_in_month": [1, 9, 17, 25]
+  },
+
+  "holidays_override_gregorian": {
+    "2025-11-20": "True Children’s Day"
+  }
+}

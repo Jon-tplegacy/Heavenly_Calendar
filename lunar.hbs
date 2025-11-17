@@ -1,0 +1,373 @@
+{{!< default}}
+
+<main class="lunar-wrap">
+  <h1 class="hc-title">Heavenly Calendar</h1>
+
+  <!-- Today card -->
+  <section class="lunar-today" aria-live="polite">
+    <div class="lday" id="lday">--</div>
+    <div class="ltitle">
+      <div class="ldate" id="ldateHuman">—</div>
+      <div class="lspecial" id="lspecial"></div>
+      <div class="lline" id="lunarMD">—</div>
+    </div>
+  </section>
+
+  <!-- Month navigation -->
+  <nav class="lunar-nav" aria-label="Month navigation">
+    <button id="prevMonth" class="navbtn" aria-label="Previous month">‹</button>
+    <div id="monthLabel" class="monthlabel">—</div>
+    <button id="nextMonth" class="navbtn" aria-label="Next month">›</button>
+  </nav>
+
+  <!-- Month grid -->
+  <section class="lunar-grid" role="grid" aria-label="Gregorian calendar">
+    <div class="grid-scroll">
+      <div class="dows">
+        <div class="dow">Mon</div><div class="dow">Tue</div><div class="dow">Wed</div>
+        <div class="dow">Thu</div><div class="dow">Fri</div><div class="dow">Sat</div><div class="dow">Sun</div>
+      </div>
+      <div id="grid" class="cells" role="rowgroup"></div>
+    </div>
+  </section>
+
+  <!-- Legend -->
+  <section class="legend" aria-label="Legend">
+    <div class="legend-item-wrap">
+      <span class="legend-swatch blue"></span><span class="legend-text nowrap"><b class="c-blue">Blue</b> — AHN SHIL IL</span>
+    </div>
+    <div class="legend-item-wrap">
+      <span class="legend-swatch red"></span><span class="legend-text nowrap"><b class="c-red">Red</b> — Holiday</span>
+    </div>
+  </section>
+</main>
+
+<style>
+  .lunar-wrap{max-width:920px;margin:32px auto;padding:0 16px;font:16px/1.6 system-ui;overflow-x:hidden}
+  .hc-title{margin:0 0 28px 0;font-size:32px;line-height:1.2;font-weight:800;color:#0a3d81}
+
+  .lunar-today{display:flex;align-items:center;gap:16px;background:#0a3d81;color:#fff;border-radius:16px;
+    padding:16px 18px;box-shadow:0 10px 30px rgba(0,0,0,.1);margin-bottom:18px}
+  .lday{font-size:42px;font-weight:800;min-width:64px;text-align:center;background:#ffcd3c;color:#112;border-radius:12px;padding:8px 14px}
+  .ldate{font-weight:700}
+  .lspecial{margin-top:4px;min-height:1.2em;opacity:.95}
+  .lline{margin-top:2px;font-weight:600;opacity:.95}
+
+  .lunar-nav{display:flex;align-items:center;justify-content:center;gap:12px;margin:16px 0}
+  .navbtn{border:0;background:#e9eef6;padding:8px 12px;border-radius:10px;cursor:pointer;font-size:18px}
+  .monthlabel{font-weight:800}
+
+  /* grid wrapper with outer border (doesn't clip) */
+  .lunar-grid{
+    background:#fafafa;
+    border:1px solid #eee;
+    border-radius:14px;
+    padding:12px;
+    position:relative;
+    overflow:visible; /* keep border visible while inner scrolls */
+  }
+  /* inner scroll container */
+  .grid-scroll{
+    overflow-x:auto;
+    -webkit-overflow-scrolling:touch;
+    padding-right:8px; /* space so right border never gets covered */
+  }
+
+  .dows{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-bottom:6px;min-width:672px}
+  .dow{display:flex;align-items:center;justify-content:center;color:#666;font-weight:600;white-space:nowrap;user-select:none}
+  .cells{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;min-width:672px}
+
+  .cell{position:relative;border:1px solid #eee;border-radius:10px;min-height:112px;background:#fff;padding:18px;
+    display:flex;flex-direction:column;gap:10px}
+  .cell.muted{background:#f6f7f9;border-style:dashed;color:#8a8f98}
+  .cell.muted .gdate{color:#8a8f98}
+
+  /* highlight today inside the cell (not outline) so it's never clipped */
+  .cell.today{box-shadow:inset 0 0 0 2px #0a3d81}
+
+  /* Top line: day left, lunar right */
+  .topline{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between; /* day ←   → (M.D) */
+    gap:6px;
+    flex-wrap:nowrap;
+    width:100%;
+  }
+  .gdate{ font-weight:800; color:#222; }
+  .lunar-inline{
+    font-weight:700; font-size:13px; color:#0a3d81; opacity:.95;
+    white-space:nowrap; flex:0 0 auto;
+  }
+
+  /* Labels row below topline */
+  .labels-row{
+    display:flex;
+    flex-wrap:wrap;
+    gap:6px 10px;
+    align-items:flex-start;
+  }
+  .tag{
+    font-weight:700;
+    font-size:10px;
+    line-height:1.1;
+    padding-left:0; /* no bg/border, just text */
+  }
+  .tag.blue{ color:#0b3fad; }
+  .tag.red{  color:#a0141a; }
+
+  /* allow labels to wrap to next line and break long words */
+  .labels-row .tag{
+    display:inline;
+    font-weight:700;
+    font-size:10px;
+    line-height:1.2;
+    padding-left:0;
+    white-space:normal;
+    overflow-wrap:anywhere;
+    word-break:break-word;
+  }
+
+  .cell.holy{border-color:#e33;background:#fff6f6}
+  .cell.ahn{border-color:#1062ff;background:#eef4ff}
+
+  /* Legend */
+  .legend{display:flex;align-items:center;gap:14px;margin-top:14px;color:#333;flex-wrap:wrap}
+  .legend-item-wrap{display:inline-flex;align-items:center;gap:8px;white-space:nowrap}
+  .legend-swatch{display:inline-block;width:14px;height:14px;border-radius:3px}
+  .legend-swatch.blue{background:#1062ff}
+  .legend-swatch.red{background:#e33}
+  .legend-text{font-size:14px}
+  .nowrap{white-space:nowrap}
+  .c-blue{color:#1062ff}
+  .c-red{color:#e33}
+
+  /* Mobile */
+  @media (max-width:700px){
+    .grid-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+    .dows,.cells{min-width:720px}
+    .cell{min-height:100px}
+    .lunar-today .lday{font-size:34px;min-width:56px}
+    .tag{font-size:11px}
+    .labels-row .tag{font-size:11px;line-height:1.2}
+    .legend{gap:10px}
+    .legend-item-wrap{gap:6px}
+  }
+</style>
+
+<script>
+(function(){
+  if (location.pathname.startsWith('/ghost')) return;
+
+  const JSON_URL = '{{asset "built/lunar.json"}}' + '?v=' + Date.now();
+  const FALLBACK_ANCHORS = [
+    { date: '2025-10-21', lunar_md: '9.1' },
+    { date: '2025-11-20', lunar_md: '10.1' }
+  ];
+
+  function parseMD(md){ const [m,d]=String(md).split('.').map(n=>parseInt(n,10)); return {m,d}; }
+  function ymd(d){ const y=d.getFullYear(), m=String(d.getMonth()+1).padStart(2,'0'), da=String(d.getDate()).padStart(2,'0'); return `${y}-${m}-${da}`; }
+  function toUTC(date){ return new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate())); }
+  function normalizeAnchors(arr){
+    return (arr||[]).map(a=>{
+      if(!a||!a.date||!a.lunar_md) return null;
+      const [yy,mm,dd]=String(a.date).split('-').map(Number);
+      if(!yy||!mm||!dd) return null;
+      const {m,d}=parseMD(a.lunar_md); if(!m||!d) return null;
+      const local=new Date(yy,mm-1,dd);
+      return {date:a.date, dateUTC:toUTC(local), m, d};
+    }).filter(Boolean).sort((x,y)=>x.dateUTC-y.dateUTC);
+  }
+  function findAnchorFor(ANCHORS, targetUTC){
+    let chosen=null; for(const a of ANCHORS){ if(a.dateUTC.getTime()<=targetUTC.getTime()) chosen=a; else break; }
+    return chosen || ANCHORS[0] || null;
+  }
+  function lunarMDFromAnchors(ANCHORS, gregDate){
+    if(!ANCHORS.length) return null;
+    const utc=toUTC(gregDate);
+    const base=findAnchorFor(ANCHORS, utc); if(!base) return null;
+    const diffDays=Math.round((utc-base.dateUTC)/86400000);
+    const day=((base.d-1+diffDays)%30+30)%30+1;
+    const monthInc=Math.floor((base.d-1+diffDays)/30);
+    let month=base.m+monthInc;
+    month=((month-1)%12+12)%12+1;
+    return {m:month,d:day};
+  }
+
+  // Data holders
+  let ANCHORS=[], HOLIDAYS={};
+  let REC = []; // recurring lunar holidays (M.D)
+
+  // Lunar index within a (12*30)-day cycle
+  function lunarIndex(md){
+    return (md.m - 1) * 30 + (md.d - 1);
+  }
+  // AHN by seed (yesterday's lunar date): every 8 days from seed
+  function isAhnBySeed(md, seedMd){
+    if(!md || !seedMd) return false;
+    const idx = lunarIndex(md);
+    const base = lunarIndex(seedMd);
+    return ((idx - base + 3600) % 8) === 0;
+  }
+  // Recurring lunar holiday names match by M.D
+  function matchRecurringLunar(md){
+    if(!md || !REC.length) return [];
+    const key = `${md.m}.${md.d}`;
+    return REC.filter(h => String(h.lunar_md) === key).map(h => h.name);
+  }
+
+  const gridEl=document.getElementById('grid');
+  const monthLabel=document.getElementById('monthLabel');
+  const ldayEl=document.getElementById('lday');
+  const ldateHumanEl=document.getElementById('ldateHuman');
+  const lspecialEl=document.getElementById('lspecial');
+  const lunarMdEl=document.getElementById('lunarMD');
+
+  let view=new Date(); view.setDate(1);
+  document.getElementById('prevMonth').addEventListener('click', ()=>{ view.setMonth(view.getMonth()-1); renderMonth(); });
+  document.getElementById('nextMonth').addEventListener('click', ()=>{ view.setMonth(view.getMonth()+1); renderMonth(); });
+
+  // Today card: recurring lunar + AHN from seed (yesterday)
+  function renderTodayCard(){
+    const now=new Date();
+    const md=lunarMDFromAnchors(ANCHORS, now);
+    ldayEl.textContent=md?md.d:'—';
+    ldateHumanEl.textContent=now.toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+    lunarMdEl.textContent=md?`Lunar M.D: ${md.m}.${md.d}`:'Lunar M.D: —';
+
+    const iso=ymd(now);
+
+    // seed = yesterday
+    const y = new Date(now); y.setDate(y.getDate()-1);
+    const seedMd = lunarMDFromAnchors(ANCHORS, y);
+
+    const recNames = matchRecurringLunar(md);
+    const isAhn = isAhnBySeed(md, seedMd);
+
+    lspecialEl.textContent =
+      HOLIDAYS[iso] ? HOLIDAYS[iso] :
+      (recNames.length ? recNames.join(', ') :
+      (isAhn ? 'AHN SHIL IL' : ''));
+  }
+
+  function renderMonth(){
+    const year=view.getFullYear(), month=view.getMonth();
+    monthLabel.textContent=new Date(year,month,1).toLocaleDateString('en-US',{month:'long',year:'numeric'});
+
+    gridEl.innerHTML='';
+    const first=new Date(year,month,1);
+    const startDow=(first.getDay()+6)%7; // Monday=0
+    const daysInMonth=new Date(year,month+1,0).getDate();
+    const todayIso=ymd(new Date());
+
+    // AHN seed: yesterday's lunar date (global for the current render)
+    const y = new Date(); y.setDate(y.getDate()-1);
+    const AHN_SEED_MD = lunarMDFromAnchors(ANCHORS, y);
+
+    /* leading days from previous month (muted cells) */
+    const prevMonthDate=new Date(year,month,0);
+    const prevMonthDays=prevMonthDate.getDate();
+    const leadCount=startDow;
+    for(let i=leadCount-1; i>=0; i--){
+      const dayNum=prevMonthDays-i;
+      const date=new Date(year,month, -i);
+      const cell=document.createElement('div'); cell.className='cell muted'; cell.setAttribute('aria-hidden','true');
+
+      const md=lunarMDFromAnchors(ANCHORS, date);
+      const top=document.createElement('div'); top.className='topline';
+      const g=document.createElement('div'); g.className='gdate'; g.textContent=dayNum;
+      const l=document.createElement('div'); l.className='lunar-inline'; l.textContent= md ? `(${md.m}.${md.d})` : '(—)';
+      top.appendChild(g); top.appendChild(l);
+      cell.appendChild(top);
+
+      const labelsRow=document.createElement('div'); labelsRow.className='labels-row';
+      cell.appendChild(labelsRow);
+
+      gridEl.appendChild(cell);
+    }
+
+    /* current month days */
+    for(let d=1; d<=daysInMonth; d++){
+      const cell=document.createElement('div'); cell.className='cell'; cell.setAttribute('role','gridcell');
+      const date=new Date(year,month,d);
+      const iso=ymd(date);
+      if(iso===todayIso) cell.classList.add('today');
+
+      const md=lunarMDFromAnchors(ANCHORS, date);
+
+      // topline
+      const top=document.createElement('div'); top.className='topline';
+      const g=document.createElement('div'); g.className='gdate'; g.textContent=d;
+      const l=document.createElement('div'); l.className='lunar-inline'; l.textContent= md ? `(${md.m}.${md.d})` : '(—)';
+      top.appendChild(g); top.appendChild(l);
+      cell.appendChild(top);
+
+      // second row: labels
+      const labelsRow=document.createElement('div'); labelsRow.className='labels-row';
+
+      // Gregorian override
+      const isGregorianHoliday = !!HOLIDAYS[iso];
+      if(isGregorianHoliday){
+        cell.classList.add('holy');
+        const t=document.createElement('span'); t.className='tag red'; t.textContent=HOLIDAYS[iso];
+        labelsRow.appendChild(t);
+      }
+
+      // Recurring lunar holidays by M.D
+      const recNames = matchRecurringLunar(md);
+      if(recNames.length){
+        cell.classList.add('holy');
+        for(const name of recNames){
+          const t=document.createElement('span'); t.className='tag red'; t.textContent=name;
+          labelsRow.appendChild(t);
+        }
+      }
+
+      // AHN by seed (yesterday)
+      const isAhn = isAhnBySeed(md, AHN_SEED_MD);
+      if(isAhn){
+        cell.classList.add('ahn');
+        const t=document.createElement('span'); t.className='tag blue'; t.textContent='AHN SHIL IL';
+        labelsRow.appendChild(t);
+      }
+
+      cell.appendChild(labelsRow);
+      gridEl.appendChild(cell);
+    }
+
+    renderTodayCard();
+  }
+
+  function showWarnOnce(msg){
+    try{
+      if(document.querySelector('.lunar-warn')) return;
+      const warn=document.createElement('div');
+      warn.className='lunar-warn';
+      warn.style.cssText='margin:12px 0 0 0;padding:10px;border-radius:8px;background:#fff3cd;color:#664d03;border:1px solid #ffe69c;font:14px/1.5 system-ui';
+      warn.textContent=msg;
+      document.querySelector('.lunar-wrap')?.prepend(warn);
+    }catch(_){}
+  }
+  function tryParseJson(text){ try{ return JSON.parse(text); } catch(e){ throw new Error('JSON parse error: '+e.message); } }
+
+  fetch(JSON_URL, {credentials:'omit'})
+    .then(async r=>{ if(!r.ok) throw new Error('HTTP '+r.status); return tryParseJson(await r.text()); })
+    .then(data=>{
+      const anchors = normalizeAnchors(data.anchors);
+      ANCHORS = anchors.length ? anchors : normalizeAnchors(FALLBACK_ANCHORS);
+      HOLIDAYS = data.holidays || {};
+      REC = Array.isArray(data.recurring_lunar_holidays) ? data.recurring_lunar_holidays : [];
+
+      if(!anchors.length) showWarnOnce('Lunar JSON loaded but anchors empty; using built-in anchors for Oct–Nov 2025.');
+      renderMonth();
+    })
+    .catch(err=>{
+      console.warn('Lunar JSON load failed:', err);
+      showWarnOnce('Lunar JSON not loaded; using built-in anchors for Oct–Nov 2025.');
+      ANCHORS = normalizeAnchors(FALLBACK_ANCHORS);
+      HOLIDAYS = {};
+      REC = [];
+      renderMonth();
+    });
+})();
+</script>
