@@ -8,13 +8,7 @@ The goal is to demonstrate how AI‑assisted coding can accelerate prototyping o
 - Vibe coding (AI‑generated code)
 - Meilisearch API (search experiments)
 
-## Usage
-1. Clone the repository
-2. Install Ghost locally
-3. Run examples from `/examples`
 
-## Structure
-- `/examples` — full experiments
 
 
 ## License
