@@ -6,15 +6,15 @@
 
   "recurring_lunar_holidays": [
     {
-      "name": "Heavenly Parent’s Day",
+      "name": "Foundation Day",
       "slug": "heavenly-parents-day",
-      "lunar_md": "1.1",
+      "lunar_md": "1.13",
       "confidence": "high"
     },
     {
-      "name": "True Parents’ Day",
+      "name": "Foundation Day for the Unified Nation of Heaven and Earth",
       "slug": "true-parents-day",
-      "lunar_md": "3.1",
+      "lunar_md": "10.3",
       "confidence": "high"
     },
     {
@@ -30,9 +30,9 @@
       "confidence": "high"
     },
     {
-      "name": "Foundation Day (Cheon Il Guk)",
+      "name": "Declaration Day of God’s Eternal Blessing",
       "slug": "foundation-day-cig",
-      "lunar_md": "1.13",
+      "lunar_md": "7.1",
       "confidence": "high"
     },
 
@@ -44,24 +44,51 @@
       "confidence": "medium"
     },
     {
-      "name": "True Parents’ Holy Wedding ",
+      "name": "True Parents’ Holy Wedding. Heavenly Parent’s Day. True Parents’ Day  ",
       "slug": "tp-holy-wedding",
       "lunar_md": "3.16",
       "confidence": "medium"
     },
     {
-      "name": "7.1 Jeol — Declaration Day of God’s Eternal Blessing",
+      "name": " Anniversary of True Father’s Seonghwa",
       "slug": "7-1-jeol",
-      "lunar_md": "7.1",
+      "lunar_md": "7.17",
       "confidence": "high"
     },
     {
       "name": "7.8 Jeol — Cosmic Sabbath for the Parents of Heaven and Earth",
-      "slug": "7-8-jeol",
-      "lunar_md": "7.8",
+      "slug": "7-7-jeol",
+      "lunar_md": "7.7",
       "confidence": "high"
     }
   ],
+
+
+"recurring_lunar_notes": [
+    { "lunar_md": "1.2", "name": "Day of Victory of Love" },
+    { "lunar_md": "1.15", "name": "True Father arrives in the US" },
+    { "lunar_md": "12.11", "name": "Founding CARP" },
+    { "lunar_md": "12.20", "name": "Cheongpyeong Providence begins" },
+    { "lunar_md": "1.24", "name": "The 74-Couple Blessing" },
+    { "lunar_md": "1.25", "name": "The 430-Couple Blessing" },
+    { "lunar_md": "2.18", "name": "Pacific Rim Era Launched (2007)" },
+    { "lunar_md": "3.4", "name": "Today’s World published (1980)" },
+    { "lunar_md": "3.13", "name": "Founding of Women’s Federation for World Peace (1992)" },
+    { "lunar_md": "4.9", "name": "Founding PWPA" },
+    { "lunar_md": "4.12", "name": "True Father finishes writing The Wolli Wonbon (1952)" },
+    { "lunar_md": "4.14", "name": "Jerusalem Declaration (2003)" },
+    { "lunar_md": "4.20", "name": "First Edition of The Washington Times published (1982)" },
+    { "lunar_md": "4.24", "name": "American Clergy Leadership Conference established (2000)" }
+    
+  ],
+
+
+
+
+
+
+
+
 
   "ahn_shil_il_rule": {
     "description": "Every 8th lunar day of each month",
