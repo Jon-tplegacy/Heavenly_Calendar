@@ -78,7 +78,26 @@
     { "lunar_md": "4.12", "name": "True Father finishes writing The Wolli Wonbon (1952)" },
     { "lunar_md": "4.14", "name": "Jerusalem Declaration (2003)" },
     { "lunar_md": "4.20", "name": "First Edition of The Washington Times published (1982)" },
-    { "lunar_md": "4.24", "name": "American Clergy Leadership Conference established (2000)" }
+    { "lunar_md": "4.24", "name": "American Clergy Leadership Conference established (2000)" },
+    { "lunar_md": "6.16", "name": "Settlement of True Parents of Heaven, Earth,& Humankind (2010)" },
+    { "lunar_md": "6.19", "name": "Universal Ballet Company established (1984)" },
+    { "lunar_md": "6.21", "name": "World Peace Cup Tournament inaugurated (2003)" },
+    { "lunar_md": "6.3", "name": "Founding of Youth Federation (1994)" },
+    { "lunar_md": "6.27", "name": "Day of Total Victory Father’s Release from Danbury (1985)" },
+    { "lunar_md": "7.9", "name": "Ceremony for the Settlement of Eight Stages" },
+    { "lunar_md": "7.4", "name": "Inter-Religious Federation for World Peace (IRFWP)(1991)" },
+    { "lunar_md": "7.21", "name": "Founding of Universal Peace Federation (UPF) (2005)" },
+    { "lunar_md": "7.27", "name": "True Father speaks at Madison Square Garden (1974) " },
+    { "lunar_md": "7.28", "name": "Unification Theological Seminary established (1975) " },
+    { "lunar_md": "8.3", "name": "Abel UN Proclaimed (2007) " },
+    { "lunar_md": "8.10", "name": "Ocean Church founded (1980) " },
+    { "lunar_md": "8.13", "name": "Day of Victory of Heaven (1976) " },
+    { "lunar_md": "8.17", "name": "Cheongpa Dong Church purchased (1955) " },
+    { "lunar_md": "8.22", "name": "Hoon Dok Hwe tradition begins (1997) " },
+    { "lunar_md": "8.23", "name": "Father Released from Heungnam (1950) " },
+    { "lunar_md": "10.4", "name": "True Parents visit North Korea (1991) " },
+    { "lunar_md": "11.10", "name": "International Cross-Cultural Blessing for World Peace (2005) " },
+    { "lunar_md": "11.12", "name": "News World begins publication (1976) " }
     
   ],
 
@@ -90,10 +109,13 @@
 
 
 
-  "ahn_shil_il_rule": {
-    "description": "Every 8th lunar day of each month",
-    "days_in_month": [1, 9, 17, 25]
-  },
+ "ahn_shil_il_rule": {
+  "description": "Ahn Shi Il every 8th day starting from 2025-09-04 (Gregorian)",
+  "seed_gregorian": "2025-09-04",
+  "interval_days": 8
+},
+
+
 
   "holidays_override_gregorian": {
     "2025-11-20": "True Children’s Day"
