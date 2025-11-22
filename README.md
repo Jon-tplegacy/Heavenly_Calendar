@@ -24,7 +24,9 @@ The goal is to combine technical innovation with spiritual meaning:
 3. Create a template and add the code.  
 4. Add a JSON file to the template folder.  
 
+demo
 
+https://tplegacy.net/calendar/
 
 
 ## 📝 License
