@@ -193,10 +193,14 @@
   if (location.pathname.startsWith('/ghost')) return;
 
   const JSON_URL = '{{asset "built/lunar.json"}}' + '?v=' + Date.now();
+
+  
   const FALLBACK_ANCHORS = [
+    { date: '2025-01-01', lunar_md: '12.2' },
     { date: '2025-10-21', lunar_md: '9.1' },
     { date: '2025-11-20', lunar_md: '10.1' }
   ];
+
 
   function parseMD(md){ const [m,d]=String(md).split('.').map(n=>parseInt(n,10)); return {m,d}; }
   function ymd(d){ const y=d.getFullYear(), m=String(d.getMonth()+1).padStart(2,'0'), da=String(d.getDate()).padStart(2,'0'); return `${y}-${m}-${da}`; }
@@ -493,10 +497,23 @@
 
   fetch(JSON_URL, {credentials:'omit'})
     .then(async r=>{ if(!r.ok) throw new Error('HTTP '+r.status); return tryParseJson(await r.text()); })
+    
+    
     .then(data=>{
-      const anchors = normalizeAnchors(data.anchors);
+      
+      const EXTRA_ANCHORS = [
+        { date: '2025-01-01', lunar_md: '12.2' }
+      ];
+
+      
+      const anchors = normalizeAnchors([
+        ...(data.anchors || []),
+        ...EXTRA_ANCHORS
+      ]);
+
       ANCHORS = anchors.length ? anchors : normalizeAnchors(FALLBACK_ANCHORS);
-            HOLIDAYS = data.holidays || {};
+
+      HOLIDAYS = data.holidays || {};
       REC = Array.isArray(data.recurring_lunar_holidays) ? data.recurring_lunar_holidays : [];
       REC_NOTES = Array.isArray(data.recurring_lunar_notes) ? data.recurring_lunar_notes : [];
 
@@ -516,17 +533,13 @@
         }
       }
 
+      if (!anchors.length) {
+        showWarnOnce('Lunar JSON loaded but anchors empty; using built-in anchors (incl. 1 Jan 2025 = 12.2).');
+      }
 
-
-
-
-
-      if(!anchors.length) showWarnOnce('Lunar JSON loaded but anchors empty; using built-in anchors for Oct–Nov 2025.');
-
-    
-      
       renderMonth();
     })
+
 
 
 
