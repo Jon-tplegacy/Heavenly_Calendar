@@ -13,6 +13,7 @@
   who fulfill our responsibility as the chosen people in unity with True Parents!
 </p>
 
+<script src="https://cdn.jsdelivr.net/npm/korean-lunar-calendar/dist/korean-lunar-calendar.min.js"></script>
 
   <!-- Today card -->
   <section class="lunar-today" aria-live="polite">
@@ -219,17 +220,34 @@
     let chosen=null; for(const a of ANCHORS){ if(a.dateUTC.getTime()<=targetUTC.getTime()) chosen=a; else break; }
     return chosen || ANCHORS[0] || null;
   }
+
+
   function lunarMDFromAnchors(ANCHORS, gregDate){
-    if(!ANCHORS.length) return null;
-    const utc=toUTC(gregDate);
-    const base=findAnchorFor(ANCHORS, utc); if(!base) return null;
-    const diffDays=Math.round((utc-base.dateUTC)/86400000);
-    const day=((base.d-1+diffDays)%30+30)%30+1;
-    const monthInc=Math.floor((base.d-1+diffDays)/30);
-    let month=base.m+monthInc;
-    month=((month-1)%12+12)%12+1;
-    return {m:month,d:day};
+  
+  
+
+  if (typeof KoreanLunarCalendar === 'undefined') {
+    
+    console.warn('KoreanLunarCalendar not loaded; using fallback lunar approximation.');
+    return null;
   }
+
+  const cal = new KoreanLunarCalendar();
+
+  // setSolarDate(year, month, day) — місяць 1-12, день 1-31
+  cal.setSolarDate(
+    gregDate.getFullYear(),
+    gregDate.getMonth() + 1,
+    gregDate.getDate()
+  );
+
+  const lunar = cal.getLunarCalendar(); 
+  // { year, month, day, intercalation }  
+
+  return { m: lunar.month, d: lunar.day };
+}
+
+
 
  
     // Data holders
